@@ -16,15 +16,15 @@ tags:
   - name: Foo
     description: All foo operations
     x-displayName: Foo
+  - name: CreateFoo
+    description: Create a new Foo
+    x-displayName: CreateFoo
   - name: UpdateFoo
     description: Update a foo
     x-displayName: UpdateFoo
   - name: ListFoo
     description: Lists all Foo`s
     x-displayName: ListFoo
-  - name: CreateFoo
-    description: Create a new Foo
-    x-displayName: CreateFoo
 paths:
   /foo/{id}:
     get:
@@ -107,29 +107,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestError'
   /foo/:
-    get:
-      security:
-        - OAuth2:
-            - read
-      summary: Fetches all Foo
-      operationId: listFoo
-      description: Find and returns all Foo
-      tags:
-        - ListFoo
-        - Foo
-      responses:
-        '200':
-          description: All Foo`s
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ListFooResponse'
-        default:
-          description: In all other cases an error is thrown
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestError'
     post:
       security:
         - OAuth2:
@@ -152,6 +129,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateFooResponse'
+        default:
+          description: In all other cases an error is thrown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestError'
+    get:
+      security:
+        - OAuth2:
+            - read
+      summary: Fetches all Foo
+      operationId: listFoo
+      description: Find and returns all Foo
+      tags:
+        - ListFoo
+        - Foo
+      responses:
+        '200':
+          description: All Foo`s
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFooResponse'
         default:
           description: In all other cases an error is thrown
           content:
@@ -182,7 +182,7 @@ components:
           format: int32
         message:
           type: string
-    SubFoo:
+    SimpleFoo:
       type: object
       properties:
         x:
@@ -203,48 +203,9 @@ components:
         description:
           type: string
         subFoo:
-          $ref: '#/components/schemas/SubFoo'
+          $ref: '#/components/schemas/SimpleFoo'
     EmptyResponse:
       description: empty response
-    UpdateFooRequest:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-    UpdateFooResponse:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        description:
-          type: string
-        subFoo:
-          $ref: '#/components/schemas/SubFoo'
-    ListFooResponse:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        description:
-          type: string
-        subFoo:
-          $ref: '#/components/schemas/SubFoo'
     CreateFooRequest:
       type: object
       required:
@@ -268,4 +229,43 @@ components:
         description:
           type: string
         subFoo:
-          $ref: '#/components/schemas/SubFoo'
+          $ref: '#/components/schemas/SimpleFoo'
+    UpdateFooRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    UpdateFooResponse:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        subFoo:
+          $ref: '#/components/schemas/SimpleFoo'
+    ListFooResponse:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        subFoo:
+          $ref: '#/components/schemas/SimpleFoo'

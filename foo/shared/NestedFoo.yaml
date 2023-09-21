@@ -1,0 +1,6 @@
+type: object
+properties:
+  bar:
+    $ref: './Bar.yaml'
+  fooBar:
+    type: string

@@ -11,4 +11,4 @@ properties:
   description:
     type: string
   subFoo:
-    $ref: '../shared/SubFoo.yaml'
+    $ref: '../shared/NestedFoo.yaml'
