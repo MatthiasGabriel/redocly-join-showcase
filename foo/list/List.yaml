@@ -1,0 +1,31 @@
+openapi: 3.0.3
+tags:
+  - name: ListFoo
+    description: Lists all Foo`s
+  - name: Foo
+    description: All foo operations
+paths:
+  /foo/:
+    get:
+      security:
+        - OAuth2:
+            - read
+      summary: Fetches all Foo
+      operationId: listFoo
+      description: Find and returns all Foo
+      tags:
+        - ListFoo
+        - Foo
+      responses:
+        '200':
+          description: All Foo`s
+          content:
+            application/json:
+              schema:
+                $ref: "./ListFooResponse.yaml"
+        default:
+          description: In all other cases an error is thrown
+          content:
+            application/json:
+              schema:
+                $ref: "../../common/RestError.yaml"

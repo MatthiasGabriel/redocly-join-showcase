@@ -1,0 +1,267 @@
+openapi: 3.0.3
+info:
+  title: Sample API
+  description: My sample api
+  version: 0.0.1
+  license:
+    name: Internal
+    url: https://mycompany.com/license
+servers:
+  - description: my foo server
+    url: https://mycompany.com/foo
+tags:
+  - name: GetSingleFoo
+    description: Get a single foo
+    x-displayName: GetSingleFoo
+  - name: Foo
+    description: All foo operations
+    x-displayName: Foo
+  - name: UpdateFoo
+    description: Update a foo
+    x-displayName: UpdateFoo
+  - name: ListFoo
+    description: Lists all Foo`s
+    x-displayName: ListFoo
+  - name: CreateFoo
+    description: Create a new Foo
+    x-displayName: CreateFoo
+paths:
+  /foo/{id}:
+    get:
+      security:
+        - OAuth2:
+            - read
+      summary: Returns a single foo
+      operationId: getFoo
+      description: Find and returns a single Foo
+      tags:
+        - GetSingleFoo
+        - Foo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the foo to retrieve
+          schema:
+            type: string
+            format: UUID
+      responses:
+        '200':
+          description: One single Food
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFooResponse'
+        '404':
+          description: Could not find any foo with given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        default:
+          description: In all other cases an error is thrown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestError'
+    put:
+      security:
+        - OAuth2:
+            - write
+      summary: Updates a single foo
+      operationId: updateFoo
+      description: Find and updates a single Foo
+      tags:
+        - UpdateFoo
+        - Foo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the foo to retrieve
+          schema:
+            type: string
+            format: UUID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFooRequest'
+      responses:
+        '200':
+          description: One single foo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateFooResponse'
+        '404':
+          description: Could not find any foo with given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        default:
+          description: In all other cases an error is thrown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestError'
+  /foo/:
+    get:
+      security:
+        - OAuth2:
+            - read
+      summary: Fetches all Foo
+      operationId: listFoo
+      description: Find and returns all Foo
+      tags:
+        - ListFoo
+        - Foo
+      responses:
+        '200':
+          description: All Foo`s
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFooResponse'
+        default:
+          description: In all other cases an error is thrown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestError'
+    post:
+      security:
+        - OAuth2:
+            - write
+      summary: Create a single foo
+      operationId: createFoo
+      description: Create a new Foo
+      tags:
+        - CreateFoo
+        - Foo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFooRequest'
+      responses:
+        '200':
+          description: One single foo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateFooResponse'
+        default:
+          description: In all other cases an error is thrown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestError'
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://example.com/oauth/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            admin: Grants access to admin operations
+  schemas:
+    RestError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    SubFoo:
+      type: object
+      properties:
+        x:
+          type: string
+        'y':
+          type: string
+    GetFooResponse:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        subFoo:
+          $ref: '#/components/schemas/SubFoo'
+    EmptyResponse:
+      description: empty response
+    UpdateFooRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    UpdateFooResponse:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+    ListFooResponse:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+    CreateFooRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    CreateFooResponse:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        subFoo:
+          $ref: '#/components/schemas/SubFoo'

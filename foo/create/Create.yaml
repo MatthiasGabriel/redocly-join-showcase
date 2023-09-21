@@ -1,0 +1,36 @@
+openapi: 3.0.3
+tags:
+  - name: CreateFoo
+    description: Create a new Foo
+  - name: Foo
+    description: All foo operations
+paths:
+  /foo/:
+    post:
+      security:
+        - OAuth2:
+            - write
+      summary: Create a single foo
+      operationId: createFoo
+      description: Create a new Foo
+      tags:
+        - CreateFoo
+        - Foo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "./CreateFooRequest.yaml"
+      responses:
+        '200':
+          description: One single foo
+          content:
+            application/json:
+              schema:
+                $ref: "./CreateFooResponse.yaml"
+        default:
+          description: In all other cases an error is thrown
+          content:
+            application/json:
+              schema:
+                $ref: "../../common/RestError.yaml"

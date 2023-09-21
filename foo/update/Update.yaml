@@ -1,0 +1,50 @@
+openapi: 3.0.3
+tags:
+  - name: UpdateFoo
+    description: Update a foo
+  - name: Foo
+    description: All foo operations
+paths:
+  /foo/{id}:
+    put:
+      security:
+        - OAuth2:
+            - write
+      summary: Updates a single foo
+      operationId: updateFoo
+      description: Find and updates a single Foo
+      tags:
+        - UpdateFoo
+        - Foo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the foo to retrieve
+          schema:
+            type: string
+            format: UUID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "./UpdateFooRequest.yaml"
+      responses:
+        '200':
+          description: One single foo
+          content:
+            application/json:
+              schema:
+                $ref: "./UpdateFooResponse.yaml"
+        '404':
+          description: Could not find any foo with given ID
+          content:
+            application/json:
+              schema:
+                $ref: "../../common/EmptyResponse.yaml"
+        default:
+          description: In all other cases an error is thrown
+          content:
+            application/json:
+              schema:
+                $ref: "../../common/RestError.yaml"

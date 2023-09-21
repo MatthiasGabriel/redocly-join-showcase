@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: Sample API
+  description: My sample api
+  version: 0.0.1
+  license:
+    name: "Internal"
+    url: "https://mycompany.com/license"
+servers:
+  - description: my foo server
+    url: https://mycompany.com/foo
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://example.com/oauth/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            admin: Grants access to admin operations
+
+paths: {}
