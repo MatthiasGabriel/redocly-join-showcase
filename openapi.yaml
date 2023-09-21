@@ -228,6 +228,8 @@ components:
           type: string
         description:
           type: string
+        subFoo:
+          $ref: '#/components/schemas/SubFoo'
     ListFooResponse:
       type: object
       required:
@@ -241,6 +243,8 @@ components:
           type: string
         description:
           type: string
+        subFoo:
+          $ref: '#/components/schemas/SubFoo'
     CreateFooRequest:
       type: object
       required:

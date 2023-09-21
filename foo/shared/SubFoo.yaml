@@ -1,6 +1,8 @@
-type: object
-properties:
-  x:
-    type: string
-  y:
-    type: string
+oneOf:
+  - $ref: './FooFoo.yaml'
+  - $ref: './FooBar.yaml'
+discriminator:
+  propertyName: elementType
+  mapping:
+    FOOFOO: "./FooFoo.yaml"
+    FOOBAR: "./FooBar.yaml"
